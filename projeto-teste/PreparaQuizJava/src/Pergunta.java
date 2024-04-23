@@ -7,15 +7,8 @@ public class Pergunta {
     private int opcaoCorretaIndex;
 
     public Pergunta(String texto, List<String> opcoes, int opcaoCorretaIndex) {
-        if (opcoes.size() < 2 || opcoes.size() > 6) {
-            throw new IllegalArgumentException("Uma pergunta deve ter entre 2 e 6 opções.");
-        }
-        if (opcaoCorretaIndex < 0 || opcaoCorretaIndex >= opcoes.size()) {
-            throw new IllegalArgumentException("O índice da opção correta está fora dos limites.");
-        }
-        
         this.texto = texto;
-        this.opcoes = new ArrayList<>(opcoes); 
+        this.opcoes = new ArrayList<>(opcoes);
         this.opcaoCorretaIndex = opcaoCorretaIndex;
     }
 
@@ -23,12 +16,24 @@ public class Pergunta {
         return texto;
     }
 
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
     public List<String> getOpcoes() {
-        return opcoes;
+        return new ArrayList<>(opcoes); // Retorna uma cópia da lista para evitar modificações externas
+    }
+
+    public void setOpcoes(List<String> opcoes) {
+        this.opcoes = new ArrayList<>(opcoes);
     }
 
     public int getOpcaoCorretaIndex() {
         return opcaoCorretaIndex;
+    }
+
+    public void setOpcaoCorretaIndex(int opcaoCorretaIndex) {
+        this.opcaoCorretaIndex = opcaoCorretaIndex;
     }
 
     public String getOpcaoCorreta() {

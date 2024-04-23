@@ -7,9 +7,9 @@ import java.util.InputMismatchException;
 
 public class App {
     private List<Usuario> usuarios;
-    private List<Questionario> questionarios;
+    private static List<Questionario> questionarios;
     private List<Ranking> ranking;
-    private Scanner scanner;
+    private static Scanner scanner = new Scanner(System.in);
 
     public App() {
         this.usuarios = new ArrayList<>();
@@ -47,7 +47,7 @@ public class App {
                     criarPerfil();
                     break;
                 case 2:
-                    // Criar questionário
+                    criarQuestionario();
                     break;
                 case 3:
                     exibirRanking();
@@ -120,6 +120,65 @@ public class App {
         System.out.println("Exibindo ranking...");
     }
 
+    public static void criarQuestionario() {
+        System.out.println("Criando um novo questionário:");
+
+        // Criar um novo questionário
+        Questionario questionario = new Questionario();
+
+        // Solicitar o número de perguntas
+        System.out.println("Digite o número de perguntas do questionário:");
+        int numeroPerguntas = scanner.nextInt();
+        scanner.nextLine(); // Consumir a quebra de linha pendente após nextInt
+
+        // Adicionar perguntas ao questionário
+        for (int i = 0; i < numeroPerguntas; i++) {
+            System.out.println("Pergunta " + (i + 1) + ":");
+
+            // Solicitar o texto da pergunta
+            System.out.println("Digite o texto da pergunta:");
+            String textoPergunta = scanner.nextLine();
+
+            // Solicitar as opções da pergunta
+            List<String> opcoes = new ArrayList<>();
+            while (true) {
+                System.out.println("Digite uma opção (ou digite 'fim' para terminar):");
+                String opcao = scanner.nextLine();
+                if (opcao.equals("fim")) {
+                    break;
+                }
+                opcoes.add(opcao);
+            }
+
+            // Verificar se há pelo menos 2 opções
+            if (opcoes.size() < 2 || opcoes.size() > 6) {
+                System.out.println("Uma pergunta deve ter entre 2 e 6 opções. Por favor, tente novamente.");
+                return;
+            }
+
+            // Solicitar o índice da opção correta
+            System.out.println("Digite o índice da opção correta (de 1 a " + opcoes.size() + "):");
+            int opcaoCorretaIndex = scanner.nextInt() - 1; // Ajustar o índice para base 0
+            scanner.nextLine(); // Consumir a quebra de linha pendente após nextInt
+
+            // Verificar se o índice está dentro dos limites
+            if (opcaoCorretaIndex < 0 || opcaoCorretaIndex >= opcoes.size()) {
+                System.out.println("O índice da opção correta está fora dos limites. Por favor, tente novamente.");
+                return;
+            }
+
+            // Criar a pergunta
+            Pergunta pergunta = new Pergunta(textoPergunta, opcoes, opcaoCorretaIndex);
+
+            // Adicionar a pergunta ao questionário
+            questionario.adicionarPergunta(pergunta);
+        }
+
+        // Adicionar o questionário à lista de questionários
+        questionarios.add(questionario);
+
+        System.out.println("Questionário criado com sucesso!");
+    }
     public static void main(String[] args) {
         App app = new App();
         app.iniciar();
