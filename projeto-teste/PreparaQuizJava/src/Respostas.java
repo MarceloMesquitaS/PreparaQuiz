@@ -1,8 +1,8 @@
-public class Resposta {
+public class Respostas {
     private String respostaCorreta;
     private String respostaUsuario;
 
-    public Resposta(String respostaCorreta, String respostaUsuario) {
+    public Respostas(String respostaCorreta, String respostaUsuario) {
         this.respostaCorreta = respostaCorreta;
         this.respostaUsuario = respostaUsuario;
     }
