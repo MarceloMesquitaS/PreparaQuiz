@@ -66,7 +66,7 @@ public class App {
                     System.out.println("Opção inválida. Por favor, escolha uma opção válida.");
                     break;
             }
-        } while (opcao != 5);
+        } while (opcao != 6);
         scanner.close();
     }
 
@@ -130,9 +130,22 @@ public class App {
         System.out.println("Digite o título do questionário:");
         String titulo = scanner.nextLine();
         questionario.setTitulo(titulo);
-        System.out.println("Digite o número de perguntas do questionário:");
-        int numeroPerguntas = scanner.nextInt();
-        scanner.nextLine(); 
+
+        int numeroPerguntas;
+        while (true) {
+            try {
+                System.out.println("Digite o número de perguntas do questionário:");
+                numeroPerguntas = Integer.parseInt(scanner.nextLine());
+                if (numeroPerguntas <= 0) {
+                    throw new IllegalArgumentException("O número de perguntas deve ser maior que zero.");
+                }
+                break; 
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor, digite um número válido.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
         for (int i = 0; i < numeroPerguntas; i++) {
             System.out.println("Pergunta " + (i + 1) + ":");
@@ -152,15 +165,24 @@ public class App {
 
             if (opcoes.size() < 2 || opcoes.size() > 6) {
                 System.out.println("Uma pergunta deve ter entre 2 e 6 opções. Por favor, tente novamente.");
-                return;
+                i--; 
+                continue; 
             }
 
-            System.out.println("Digite o índice da opção correta (de 1 a " + opcoes.size() + "):");
-            int opcaoCorretaIndex = scanner.nextInt() - 1; 
-
-            if (opcaoCorretaIndex < 0 || opcaoCorretaIndex >= opcoes.size()) {
-                System.out.println("O índice da opção correta está fora dos limites. Por favor, tente novamente.");
-                return;
+            int opcaoCorretaIndex;
+            while (true) {
+                try {
+                    System.out.println("Digite o índice da opção correta (de 1 a " + opcoes.size() + "):");
+                    opcaoCorretaIndex = Integer.parseInt(scanner.nextLine()) - 1;
+                    if (opcaoCorretaIndex < 0 || opcaoCorretaIndex >= opcoes.size()) {
+                        throw new IllegalArgumentException("O índice da opção correta está fora dos limites.");
+                    }
+                    break; 
+                } catch (NumberFormatException e) {
+                    System.out.println("Por favor, digite um número válido.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
             }
 
             Pergunta pergunta = new Pergunta(textoPergunta, opcoes, opcaoCorretaIndex);
