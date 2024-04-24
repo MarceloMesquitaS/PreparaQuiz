@@ -25,7 +25,8 @@ public class App {
         System.out.println("2 - Criar Questionário");
         System.out.println("3 - Exibir Ranking");
         System.out.println("4 - Exibir Histórico de Pontuação");
-        System.out.println("5 - Sair");
+        System.out.println("5 - Responder Questionário");
+        System.out.println("6 - Sair");
         System.out.print("Opção: ");
     }
 
@@ -56,6 +57,9 @@ public class App {
                     // Exibir histórico de pontuação
                     break;
                 case 5:
+                    responderQuestionario();
+                    break;
+                case 6:
                     System.out.println("Saindo do PreparaQuiz...");
                     break;
                 default:
@@ -109,37 +113,33 @@ public class App {
             }
         } while (true);
     
-        // Criar o usuário após a verificação
         Usuario novoUsuario = new Usuario(nome, senha, email);
         usuarios.add(novoUsuario);
         System.out.println("Usuário criado com sucesso!");
     }
     
     public void exibirRanking() {
-        // Implementar exibição do ranking
         System.out.println("Exibindo ranking...");
     }
 
     public static void criarQuestionario() {
         System.out.println("Criando um novo questionário:");
 
-        // Criar um novo questionário
         Questionario questionario = new Questionario();
 
-        // Solicitar o número de perguntas
+        System.out.println("Digite o título do questionário:");
+        String titulo = scanner.nextLine();
+        questionario.setTitulo(titulo);
         System.out.println("Digite o número de perguntas do questionário:");
         int numeroPerguntas = scanner.nextInt();
-        scanner.nextLine(); // Consumir a quebra de linha pendente após nextInt
+        scanner.nextLine(); 
 
-        // Adicionar perguntas ao questionário
         for (int i = 0; i < numeroPerguntas; i++) {
             System.out.println("Pergunta " + (i + 1) + ":");
 
-            // Solicitar o texto da pergunta
             System.out.println("Digite o texto da pergunta:");
             String textoPergunta = scanner.nextLine();
 
-            // Solicitar as opções da pergunta
             List<String> opcoes = new ArrayList<>();
             while (true) {
                 System.out.println("Digite uma opção (ou digite 'fim' para terminar):");
@@ -150,34 +150,73 @@ public class App {
                 opcoes.add(opcao);
             }
 
-            // Verificar se há pelo menos 2 opções
             if (opcoes.size() < 2 || opcoes.size() > 6) {
                 System.out.println("Uma pergunta deve ter entre 2 e 6 opções. Por favor, tente novamente.");
                 return;
             }
 
-            // Solicitar o índice da opção correta
             System.out.println("Digite o índice da opção correta (de 1 a " + opcoes.size() + "):");
-            int opcaoCorretaIndex = scanner.nextInt() - 1; // Ajustar o índice para base 0
-            scanner.nextLine(); // Consumir a quebra de linha pendente após nextInt
+            int opcaoCorretaIndex = scanner.nextInt() - 1; 
 
-            // Verificar se o índice está dentro dos limites
             if (opcaoCorretaIndex < 0 || opcaoCorretaIndex >= opcoes.size()) {
                 System.out.println("O índice da opção correta está fora dos limites. Por favor, tente novamente.");
                 return;
             }
 
-            // Criar a pergunta
             Pergunta pergunta = new Pergunta(textoPergunta, opcoes, opcaoCorretaIndex);
 
-            // Adicionar a pergunta ao questionário
             questionario.adicionarPergunta(pergunta);
         }
 
-        // Adicionar o questionário à lista de questionários
         questionarios.add(questionario);
 
         System.out.println("Questionário criado com sucesso!");
+    }
+
+    public void responderQuestionario() {
+        if (questionarios.isEmpty()) {
+            System.out.println("Não há questionários disponíveis para responder.");
+            return;
+        }
+
+        System.out.println("Questionários disponíveis para responder:");
+        for (int i = 0; i < questionarios.size(); i++) {
+            System.out.println((i + 1) + ". " + questionarios.get(i).getTitulo());
+        }
+
+        System.out.println("Digite o número do questionário que deseja responder:");
+        int numeroQuestionario = scanner.nextInt();
+        scanner.nextLine(); 
+
+        if (numeroQuestionario < 1 || numeroQuestionario > questionarios.size()) {
+            System.out.println("Número de questionário inválido.");
+            return;
+        }
+
+        Questionario questionarioSelecionado = questionarios.get(numeroQuestionario - 1);
+
+        int pontos = 0;
+
+        for (Pergunta pergunta : questionarioSelecionado.getPerguntas()) {
+            System.out.println("Pergunta: " + pergunta.getTexto());
+            List<String> opcoes = pergunta.getOpcoes();
+            for (int i = 0; i < opcoes.size(); i++) {
+                System.out.println((i + 1) + ". " + opcoes.get(i));
+            }
+
+            System.out.println("Digite o número da sua resposta:");
+            int resposta = scanner.nextInt();
+            scanner.nextLine(); 
+
+            if (resposta == pergunta.getOpcaoCorretaIndex() + 1) {
+                pontos += 100;
+                System.out.println("Resposta correta! Você ganhou 100 pontos.");
+            } else {
+                System.out.println("Resposta incorreta. A resposta correta era: " + pergunta.getOpcaoCorreta());
+            }
+        }
+
+        System.out.println("Você fez " + pontos + " pontos neste questionário.");
     }
     public static void main(String[] args) {
         App app = new App();
