@@ -7,13 +7,11 @@ import java.util.InputMismatchException;
 public class App {
     private List<Usuario> usuarios;
     private static List<Questionario> questionarios;
-    private List<Ranking> ranking;
     private static Scanner scanner = new Scanner(System.in);
 
     public App() {
         this.usuarios = new ArrayList<>();
         this.questionarios = new ArrayList<>();
-        this.ranking = new ArrayList<>();
         this.scanner = new Scanner(System.in);
     }
 
@@ -22,10 +20,9 @@ public class App {
         System.out.println("Escolha uma opção:");
         System.out.println("1 - Criar Perfil");
         System.out.println("2 - Criar Questionário");
-        System.out.println("3 - Exibir Ranking");
-        System.out.println("4 - Exibir Histórico de Pontuação");
-        System.out.println("5 - Responder Questionário");
-        System.out.println("6 - Sair");
+        System.out.println("3 - Exibir Histórico de Pontuação");
+        System.out.println("4 - Responder Questionário");
+        System.out.println("5 - Sair");
         System.out.print("Opção: ");
     }
 
@@ -50,22 +47,19 @@ public class App {
                     criarQuestionario();
                     break;
                 case 3:
-                    exibirRanking();
-                    break;
-                case 4:
                     // Exibir histórico de pontuação
                     break;
-                case 5:
+                case 4:
                     responderQuestionario();
                     break;
-                case 6:
+                case 5:
                     System.out.println("Saindo do PreparaQuiz...");
                     break;
                 default:
                     System.out.println("Opção inválida. Por favor, escolha uma opção válida.");
                     break;
             }
-        } while (opcao != 6);
+        } while (opcao != 5);
         scanner.close();
     }
 
@@ -117,9 +111,6 @@ public class App {
         System.out.println("Usuário criado com sucesso!");
     }
     
-    public void exibirRanking() {
-        System.out.println("Exibindo ranking...");
-    }
 
     public static void criarQuestionario() {
         System.out.println("Criando um novo questionário:");
