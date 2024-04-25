@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,6 +11,8 @@ public class App {
 
     public App() {
         this.usuarios = new ArrayList<>();
+        this.questionarios = new ArrayList<>();
+        this.scanner = new Scanner(System.in);
     }
 
     public void exibirMenu() {
@@ -109,6 +110,7 @@ public class App {
         usuarios.add(novoUsuario);
         System.out.println("Usuário criado com sucesso!");
     }
+    
 
     public static void criarQuestionario() {
         System.out.println("Criando um novo questionário:");
